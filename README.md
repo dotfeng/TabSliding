@@ -8,7 +8,7 @@ TabSliding
   
     public class MyPagerAdapter extends FragmentPagerAdapter implements TabContentProvider{
       ......
-                @Override
+      @Override
 		public Object getTabContent(int position) {
 			return mImageViewArray[position];
 			/*switch (position) {
