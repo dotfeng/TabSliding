@@ -3,12 +3,11 @@ TabSliding
 
 
 基于 https://github.com/astuetz/PagerSlidingTabStrip <br>
-  1、修改了可以更方便添加图标tab；<br>
+  1、修改了添加tab标题，可以更方便添加图标tab；<br>
   
   
     public class MyPagerAdapter extends FragmentPagerAdapter implements TabContentProvider{
       ......
-  
     @Override
 		public Object getTabContent(int position) {
 			return mImageViewArray[position];
@@ -28,6 +27,6 @@ TabSliding
 		
 		}
   
-  2、可以设置indicator在tab上或者下。
+  2、可以设置indicator在tab标题上或者下。
 
     tabs.setIndicatorBelow(false);
