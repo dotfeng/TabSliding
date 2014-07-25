@@ -5,8 +5,8 @@ TabSliding
 基于 https://github.com/astuetz/PagerSlidingTabStrip <br>
   1、修改了可以更方便添加图标tab；<br>
   
-  public class MyPagerAdapter extends FragmentPagerAdapter implements TabContentProvider{
   
+    public class MyPagerAdapter extends FragmentPagerAdapter implements TabContentProvider{
       ......
   
     @Override
