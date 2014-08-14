@@ -41,16 +41,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class TabSlidingView extends HorizontalScrollView {
+	public final static int TITLE = 1;
+	public final static int ICON = 2;
+	public final static int TITLE_ICON = 3;
+	
+	private int tabType = TITLE_ICON;
+	
+	public int getTabType() {
+		return tabType;
+	}
+
+	public void setTabType(int tabType) {
+		this.tabType = tabType;
+	}
 
 	public interface TabContentProvider {
 		public Object getTabContent(int position);
-		//e.g.
 		/*switch (position) {
 		case 0:
-			//image resource
 			return mImageViewArray[position];
 		case 1:
-			//title string
 			return titles[position];
 		default:
 			return null;
@@ -82,24 +92,24 @@ public class TabSlidingView extends HorizontalScrollView {
 	private Paint rectPaint;
 	private Paint dividerPaint;
 
-	private int indicatorColor = 0xFF666666;
+	private int indicatorColor = 0xffffff;
 	private int underlineColor = 0x1A000000;
 	private int dividerColor = 0x1A000000;
 
-	private boolean shouldExpand = false;
+	private boolean shouldExpand = true;
 	private boolean textAllCaps = true;
-	private boolean indicatorBelow = true;
+	private boolean indicatorBelow = false;
 
 	private int scrollOffset = 52;
-	private int indicatorHeight = 8;
-	private int underlineHeight = 2;
+	private int indicatorHeight = 2;
+	private int underlineHeight = 0;
 	private int dividerPadding = 12;
-	private int tabPadding = 24;
+	private int tabPadding = 0;
 	private int dividerWidth = 1;
 
-	private int tabTextSize = 12;
+	private int tabTextSize = 15;
 	private int tabTextColor = 0xFF666666;
-	private int selectedTabTextColor = 0xFF666666;
+	private int selectedTabTextColor = 0xFFFF8C69;
 	private Typeface tabTypeface = null;
 	private int tabTypefaceStyle = Typeface.NORMAL;
 
@@ -174,7 +184,7 @@ public class TabSlidingView extends HorizontalScrollView {
 		dividerPaint.setStrokeWidth(dividerWidth);
 
 		defaultTabLayoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-		expandedTabLayoutParams = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1.0f);
+		expandedTabLayoutParams = new LinearLayout.LayoutParams(dm.widthPixels/4, LayoutParams.MATCH_PARENT, 1.0f);
 
 		if (locale == null) {
 			locale = getResources().getConfiguration().locale;
@@ -204,14 +214,21 @@ public class TabSlidingView extends HorizontalScrollView {
 		tabCount = pager.getAdapter().getCount();
 
 		for (int i = 0; i < tabCount; i++) {
-			//text or image resource
-			if(((TabContentProvider) pager.getAdapter()).getTabContent(i) 
-					instanceof String) {
+			if(TITLE_ICON == getTabType()) {
+				addTextIconTab(i, pager.getAdapter().getPageTitle(i).toString(),
+						(Integer) ((TabContentProvider) pager.getAdapter()).getTabContent(i));
+			}else if(TITLE == getTabType()) {
 				addTextTab(i, (String) ((TabContentProvider) pager.getAdapter()).getTabContent(i));
-			} else if(((TabContentProvider) pager.getAdapter()).getTabContent(i) 
-					instanceof Integer) {
+			} else {
 				addIconTab(i, (Integer) ((TabContentProvider) pager.getAdapter()).getTabContent(i));
 			}
+			
+//			if (pager.getAdapter() instanceof IconTabProvider) {
+//				addIconTab(i, ((IconTabProvider) pager.getAdapter()).getPageIconResId(i));
+//			} else {
+//				addTextTab(i, pager.getAdapter().getPageTitle(i).toString());
+//			}
+
 		}
 
 		updateTabStyles();
@@ -241,7 +258,6 @@ public class TabSlidingView extends HorizontalScrollView {
 
 		ImageButton tab = new ImageButton(getContext());
 		tab.setImageResource(resId);
-
 		addTab(position, tab);
 
 	}
@@ -254,11 +270,36 @@ public class TabSlidingView extends HorizontalScrollView {
 				pager.setCurrentItem(position);
 			}
 		});
-
+		
 		tab.setPadding(tabPadding, 0, tabPadding, 0);
 		tabsContainer.addView(tab, position, shouldExpand ? expandedTabLayoutParams : defaultTabLayoutParams);
 	}
 
+	private void addTextIconTab(final int position, String title, int resId) {
+
+		TextView text = new TextView(getContext());
+		text.setText(title);
+		text.setGravity(Gravity.CENTER);
+		text.setSingleLine();
+
+		ImageButton icon = new ImageButton(getContext());  
+		icon.setImageResource(resId);
+		icon.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				pager.setCurrentItem(position);
+			}
+		});
+		
+		LinearLayout linearLayout = new LinearLayout(getContext());
+		linearLayout.setOrientation(LinearLayout.VERTICAL);
+		
+		linearLayout.addView(icon, shouldExpand ? expandedTabLayoutParams : defaultTabLayoutParams);
+		linearLayout.addView(text, shouldExpand ? expandedTabLayoutParams : defaultTabLayoutParams);
+		
+		addTab(position, linearLayout);
+	}
+	
 	private void updateTabStyles() {
 
 		for (int i = 0; i < tabCount; i++) {
@@ -290,9 +331,38 @@ public class TabSlidingView extends HorizontalScrollView {
 				ImageButton tab = (ImageButton) v;
 				tab.setSelected(false);
 				if (i == selectedPosition) {
-					//出发选中事件
 					tab.setSelected(true);
 				}
+			}else {
+				LinearLayout l = (LinearLayout) v;
+				
+				
+				ImageButton icon = (ImageButton) l.getChildAt(0);
+				icon.setBackgroundResource(tabBackgroundResId);
+				icon.setSelected(false);
+				if (i == selectedPosition) {
+					icon.setSelected(true);
+				}
+				
+				
+				TextView text = (TextView) l.getChildAt(1);
+				text.setTextSize(TypedValue.COMPLEX_UNIT_PX, tabTextSize);
+				text.setTypeface(tabTypeface, tabTypefaceStyle);
+				text.setTextColor(tabTextColor);
+
+				// setAllCaps() is only available from API 14, so the upper case is made manually if we are on a
+				// pre-ICS-build
+				if (textAllCaps) {
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+						text.setAllCaps(true);
+					} else {
+						text.setText(text.getText().toString().toUpperCase(locale));
+					}
+				}
+				if (i == selectedPosition) {
+					text.setTextColor(selectedTabTextColor);
+				}
+			
 			}
 		}
 
@@ -329,7 +399,11 @@ public class TabSlidingView extends HorizontalScrollView {
 		
 		// draw underline
 		rectPaint.setColor(underlineColor);
-		canvas.drawRect(0, height - underlineHeight, tabsContainer.getWidth(), height, rectPaint);
+		if(isIndicatorBelow()) {	
+			canvas.drawRect(0, height - underlineHeight, tabsContainer.getWidth(), height, rectPaint);
+		}else {
+			canvas.drawRect(0, 0, tabsContainer.getWidth(), underlineHeight, rectPaint);
+		}
 
 		// draw indicator line
 		rectPaint.setColor(indicatorColor);

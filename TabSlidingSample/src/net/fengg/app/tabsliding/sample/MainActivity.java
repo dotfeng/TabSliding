@@ -33,7 +33,7 @@ public class MainActivity extends FragmentActivity {
 	
 	private ViewPager pager;
 	
-	private final int mImageViewArray[] = {R.drawable.tab_circle_btn, R.drawable.tab_convenience_btn};
+	private final int mImageViewArray[] = {R.drawable.tab_home_btn};
 	
 	private final String[] titles = { "主页","省钱", "便民", "圈子"};
 	
@@ -54,24 +54,26 @@ public class MainActivity extends FragmentActivity {
 		// 设置Tab是自动填充满屏幕的
 		tabs.setShouldExpand(true);
 		// 设置Tab的分割线是透明的
-		tabs.setDividerColor(Color.TRANSPARENT);
+//		tabs.setDividerColor(Color.TRANSPARENT);
 		// 设置Tab底部线的高度
 		tabs.setUnderlineHeight((int) TypedValue.applyDimension(
 				TypedValue.COMPLEX_UNIT_DIP, 1, dm));
 		// 设置Tab Indicator的高度
 		tabs.setIndicatorHeight((int) TypedValue.applyDimension(
-				TypedValue.COMPLEX_UNIT_DIP, 1, dm));
+				TypedValue.COMPLEX_UNIT_DIP, 2, dm));
 		// 设置Tab标题文字的大小
 		tabs.setTextSize((int) TypedValue.applyDimension(
-				TypedValue.COMPLEX_UNIT_SP, 18, dm));
+				TypedValue.COMPLEX_UNIT_SP, 15, dm));
 		// 设置Tab Indicator的颜色
 		tabs.setIndicatorColor(Color.parseColor("#45c01a"));
+		tabs.setUnderlineColor(Color.parseColor("#45c01a"));
 		// 设置选中Tab文字的颜色 (这是我自定义的一个方法)
-		tabs.setSelectedTextColor(Color.parseColor("#45c01a"));
+//		tabs.setSelectedTextColor(Color.parseColor("#45c01a"));
 		// 取消点击Tab时的背景色
 		tabs.setTabBackground(0);
+		tabs.setTabType(TabSlidingView.TITLE_ICON);
 		//设置指示在上部
-		tabs.setIndicatorBelow(true);
+		tabs.setIndicatorBelow(false);
 
 	}
 
@@ -121,8 +123,8 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		public Object getTabContent(int position) {
-//			return mImageViewArray[position];
-			switch (position) {
+			return mImageViewArray[0];
+			/*switch (position) {
 			case 0:
 				return titles[0];
 			case 1:
@@ -133,9 +135,7 @@ public class MainActivity extends FragmentActivity {
 				return mImageViewArray[1];
 			default:
 				return null;
-			}
+			}*/
 		}
-		
-
 	}
 }
