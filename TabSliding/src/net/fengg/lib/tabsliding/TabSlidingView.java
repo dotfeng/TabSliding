@@ -258,10 +258,6 @@ public class TabSlidingView extends HorizontalScrollView {
 
 		ImageButton tab = new ImageButton(getContext());
 		tab.setImageResource(resId);
-<<<<<<< HEAD
-=======
-	        tab.setSelected(false);
->>>>>>> origin/master
 		addTab(position, tab);
 
 	}
@@ -335,10 +331,7 @@ public class TabSlidingView extends HorizontalScrollView {
 				ImageButton tab = (ImageButton) v;
 			
 				if (i == selectedPosition) {
-<<<<<<< HEAD
-=======
 					//触发选中事件
->>>>>>> origin/master
 					tab.setSelected(true);
 				}
 			}else {
