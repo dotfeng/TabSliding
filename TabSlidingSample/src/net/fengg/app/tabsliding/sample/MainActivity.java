@@ -19,6 +19,7 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 
 
 public class MainActivity extends FragmentActivity {
@@ -78,6 +79,8 @@ public class MainActivity extends FragmentActivity {
 		// 取消点击Tab时的背景色
 		tabs.setTabBackground(0);
 		tabs.setTabType(TabSlidingView.TITLE_ICON);
+		tabs.setTitileIconDirection(LinearLayout.VERTICAL);
+		tabs.setIconAbove(true);
 		//设置指示在上部
 		tabs.setIndicatorBelow(false);
 

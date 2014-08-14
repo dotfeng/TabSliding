@@ -47,6 +47,26 @@ public class TabSlidingView extends HorizontalScrollView {
 	
 	private int tabType = TITLE_ICON;
 	
+	private int titileIconDirection = LinearLayout.VERTICAL;
+	
+	private boolean iconAbove = true;
+	
+	public boolean isIconAbove() {
+		return iconAbove;
+	}
+
+	public void setIconAbove(boolean iconAbove) {
+		this.iconAbove = iconAbove;
+	}
+
+	public int getTitileIconDirection() {
+		return titileIconDirection;
+	}
+
+	public void setTitileIconDirection(int titileIconDirection) {
+		this.titileIconDirection = titileIconDirection;
+	}
+
 	public int getTabType() {
 		return tabType;
 	}
@@ -292,11 +312,15 @@ public class TabSlidingView extends HorizontalScrollView {
 		});
 		
 		LinearLayout linearLayout = new LinearLayout(getContext());
-		linearLayout.setOrientation(LinearLayout.VERTICAL);
+		linearLayout.setOrientation(titileIconDirection);
 		
-		linearLayout.addView(icon, shouldExpand ? expandedTabLayoutParams : defaultTabLayoutParams);
-		linearLayout.addView(text, shouldExpand ? expandedTabLayoutParams : defaultTabLayoutParams);
-		
+		if(iconAbove) {
+			linearLayout.addView(icon, shouldExpand ? expandedTabLayoutParams : defaultTabLayoutParams);
+			linearLayout.addView(text, shouldExpand ? expandedTabLayoutParams : defaultTabLayoutParams);
+		}else {
+			linearLayout.addView(text, shouldExpand ? expandedTabLayoutParams : defaultTabLayoutParams);
+			linearLayout.addView(icon, shouldExpand ? expandedTabLayoutParams : defaultTabLayoutParams);
+		}
 		addTab(position, linearLayout);
 	}
 	
