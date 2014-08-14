@@ -32,3 +32,9 @@ TabSliding
   2、可以设置indicator在tab标题上或者下。
 
     tabs.setIndicatorBelow(false);
+    
+  3、设置标题属性
+  
+    tabs.setTabType(TabSlidingView.TITLE_ICON);
+    tabs.setTitileIconDirection(LinearLayout.VERTICAL);
+    tabs.setIconAbove(true);
