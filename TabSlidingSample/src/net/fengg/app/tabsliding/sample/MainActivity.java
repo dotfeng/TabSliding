@@ -7,6 +7,7 @@ import net.fengg.app.tabsliding.sample.fragment.FragmentSecond;
 import net.fengg.app.tabsliding.sample.fragment.FragmentThird;
 import net.fengg.lib.tabsliding.TabSlidingView;
 import net.fengg.lib.tabsliding.TabSlidingView.TabContentProvider;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Window;
+import android.view.WindowManager;
 
 
 public class MainActivity extends FragmentActivity {
@@ -33,13 +36,16 @@ public class MainActivity extends FragmentActivity {
 	
 	private ViewPager pager;
 	
-	private final int mImageViewArray[] = {R.drawable.tab_home_btn};
+	private final int mImageViewArray[] = { R.drawable.tab_home,R.drawable.tab_convenience, R.drawable.tab_rentalhouse, R.drawable.tab_my};
 	
 	private final String[] titles = { "主页","省钱", "便民", "圈子"};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//竖屏
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		setContentView(R.layout.activity_main);
 		dm = getResources().getDisplayMetrics();
 		tabs = (TabSlidingView) findViewById(R.id.tabs);
@@ -123,7 +129,7 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		public Object getTabContent(int position) {
-			return mImageViewArray[0];
+			return mImageViewArray[position];
 			/*switch (position) {
 			case 0:
 				return titles[0];
