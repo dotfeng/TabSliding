@@ -6,6 +6,7 @@ import net.fengg.app.tabsliding.sample.fragment.FragmentFour;
 import net.fengg.app.tabsliding.sample.fragment.FragmentSecond;
 import net.fengg.app.tabsliding.sample.fragment.FragmentThird;
 import net.fengg.lib.tabsliding.TabSlidingView;
+import net.fengg.lib.tabsliding.ContentItem;
 import net.fengg.lib.tabsliding.TabSlidingView.TabContentProvider;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -78,11 +79,10 @@ public class MainActivity extends FragmentActivity {
 //		tabs.setSelectedTextColor(Color.parseColor("#45c01a"));
 		// 取消点击Tab时的背景色
 		tabs.setTabBackground(0);
-		tabs.setTabType(TabSlidingView.TITLE_ICON);
 		tabs.setTitileIconDirection(LinearLayout.VERTICAL);
 		tabs.setIconAbove(true);
 		//设置指示在上部
-		tabs.setIndicatorBelow(false);
+		tabs.setIndicatorBelow(true);
 
 	}
 
@@ -131,8 +131,11 @@ public class MainActivity extends FragmentActivity {
 		}
 
 		@Override
-		public Object getTabContent(int position) {
-			return mImageViewArray[position];
+		public ContentItem getTabContent(int position) {
+			ContentItem item = new ContentItem();
+			item.setTitle(titles[position]);
+			item.setIconRes(mImageViewArray[position]);
+			return item;
 			/*switch (position) {
 			case 0:
 				return titles[0];

@@ -29,6 +29,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -41,12 +42,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class TabSlidingView extends HorizontalScrollView {
-	public final static int TITLE = 1;
-	public final static int ICON = 2;
-	public final static int TITLE_ICON = 3;
-	
-	private int tabType = TITLE_ICON;
-	
 	private int titileIconDirection = LinearLayout.VERTICAL;
 	
 	private boolean iconAbove = true;
@@ -67,16 +62,8 @@ public class TabSlidingView extends HorizontalScrollView {
 		this.titileIconDirection = titileIconDirection;
 	}
 
-	public int getTabType() {
-		return tabType;
-	}
-
-	public void setTabType(int tabType) {
-		this.tabType = tabType;
-	}
-
 	public interface TabContentProvider {
-		public Object getTabContent(int position);
+		public ContentItem getTabContent(int position);
 		/*switch (position) {
 		case 0:
 			return mImageViewArray[position];
@@ -234,14 +221,23 @@ public class TabSlidingView extends HorizontalScrollView {
 		tabCount = pager.getAdapter().getCount();
 
 		for (int i = 0; i < tabCount; i++) {
-			if(TITLE_ICON == getTabType()) {
-				addTextIconTab(i, pager.getAdapter().getPageTitle(i).toString(),
-						(Integer) ((TabContentProvider) pager.getAdapter()).getTabContent(i));
-			}else if(TITLE == getTabType()) {
-				addTextTab(i, (String) ((TabContentProvider) pager.getAdapter()).getTabContent(i));
-			} else {
-				addIconTab(i, (Integer) ((TabContentProvider) pager.getAdapter()).getTabContent(i));
+			ContentItem item = ((TabContentProvider) pager.getAdapter()).getTabContent(i);
+			if(TextUtils.isEmpty(item.getTitle()) && item.getIconRes() != 0) {
+				addTextIconTab(i, item.getTitle(), item.getIconRes());
+			}else if(!TextUtils.isEmpty(item.getTitle())){
+				addTextTab(i, item.getTitle());
+			}else if(item.getIconRes() != 0) {
+				addIconTab(i, item.getIconRes());
 			}
+			
+//			if(TITLE_ICON == getTabType()) {
+//				addTextIconTab(i, pager.getAdapter().getPageTitle(i).toString(),
+//						(Integer) ((TabContentProvider) pager.getAdapter()).getTabContent(i));
+//			}else if(TITLE == getTabType()) {
+//				addTextTab(i, (String) ((TabContentProvider) pager.getAdapter()).getTabContent(i));
+//			} else {
+//				addIconTab(i, (Integer) ((TabContentProvider) pager.getAdapter()).getTabContent(i));
+//			}
 			
 //			if (pager.getAdapter() instanceof IconTabProvider) {
 //				addIconTab(i, ((IconTabProvider) pager.getAdapter()).getPageIconResId(i));
