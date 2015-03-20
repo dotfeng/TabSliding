@@ -1,6 +1,7 @@
 TabSliding
 ==========
 
+![image](https://github.com/dotfeng/TabSliding/raw/master/screenshot.png)
 
 基于 https://github.com/astuetz/PagerSlidingTabStrip <br>
   1、修改了添加tab标题，可以更方便添加图标tab；<br>
