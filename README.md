@@ -1,4 +1,5 @@
-DEPRECATED
+#DEPRECATED
+
 Instead by  https://github.com/dotfeng/TabViewPagerIndicator
 ==========
 
