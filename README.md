@@ -1,4 +1,5 @@
-TabSliding
+DEPRECATED
+Instead by  https://github.com/dotfeng/TabViewPagerIndicator
 ==========
 
 ![image](https://github.com/dotfeng/TabSliding/raw/master/screenshot.png)
